@@ -64,3 +64,15 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/libnfc-nci.conf \
     $(LOCAL_PATH)/nfc/libnfc-nxp.conf:$(TARGET_COPY_OUT_SYSTEM)/etc/libnfc-nxp.conf \
     $(LOCAL_PATH)/nfc/libnfc-nxp.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
+
+# Treble
+BOARD_VNDK_RUNTIME_DISABLE := false
+
+# Wallpapers
+PRODUCT_PACKAGES += \
+    WallpapersBReel2018
+
+#KeyHandler
+PRODUCT_PACKAGES += \
+    KeyHandler
+
