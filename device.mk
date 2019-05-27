@@ -43,7 +43,7 @@ PRODUCT_PACKAGES += \
 # HIDL
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/manifest.xml:system/etc/manifest.xml
-	
+
 # Google Camera
 PRODUCT_PACKAGES += \
     GoogleCamera
@@ -78,7 +78,7 @@ BOARD_VNDK_RUNTIME_DISABLE := false
 # PocketMode
 PRODUCT_PACKAGES += \
     XiaomiPocketMode
-	
+
 # Wallpapers
 PRODUCT_PACKAGES += \
     WallpapersBReel2018

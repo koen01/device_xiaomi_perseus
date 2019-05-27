@@ -1,7 +1,7 @@
 [
   {
     "remote":       "github",
-    "repository":   "Jdelavega36/device_xiaomi_sdm845-common",
+    "repository":   "koen01/device_xiaomi_sdm845-common",
     "target_path":  "device/xiaomi/sdm845-common",
     "branch":       "pie"
   },
