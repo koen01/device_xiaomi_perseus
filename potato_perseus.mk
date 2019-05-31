@@ -8,14 +8,14 @@
 $(call inherit-product, device/xiaomi/perseus/device.mk)
 
 # Inherit some common PixelExperience stuff.
-$(call inherit-product, vendor/arrow/config/common.mk)
+$(call inherit-product, vendor/potato/config/common_full_phone.mk)
 TARGET_GAPPS_ARCH := arm64
 TARGET_BOOT_ANIMATION_RES := 1080
 # Define as phone to select Google Dialer
 IS_PHONE := true
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := arrow_perseus
+PRODUCT_NAME := potato_perseus
 PRODUCT_DEVICE := perseus
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := MIX 3

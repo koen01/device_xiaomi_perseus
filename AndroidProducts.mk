@@ -14,4 +14,4 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/arrow_perseus.mk
+    $(LOCAL_DIR)/potato_perseus.mk
