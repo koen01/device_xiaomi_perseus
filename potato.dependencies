@@ -1,0 +1,14 @@
+[
+  {
+    "remote":       "github",
+    "repository":   "koen01/device_xiaomi_sdm845-common",
+    "target_path":  "device/xiaomi/sdm845-common",
+    "branch":       "baked"
+  },
+  {
+    "remote":      "github",
+    "repository":  "Demon000/kernel_xiaomi_sdm845",
+    "target_path": "kernel/xiaomi/sdm845",
+    "branch":      "lineage-16.0"
+  }
+]
