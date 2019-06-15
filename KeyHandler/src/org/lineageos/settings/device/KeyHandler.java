@@ -1,3 +1,4 @@
+/*
  * Copyright (C) 2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,51 +16,136 @@
 
 package org.lineageos.settings.device;
 
+import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.content.Context;
-import android.media.AudioManager;
+import android.content.Intent;
+import android.hardware.camera2.CameraManager;
+import android.os.PowerManager;
+import android.os.UserHandle;
 import android.os.Vibrator;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.KeyEvent;
 
 import com.android.internal.os.DeviceKeyHandler;
 
-public class KeyHandler implements DeviceKeyHandler {
-    private static final String TAG = KeyHandler.class.getSimpleName();
+import java.util.Timer;
+import java.util.TimerTask;
 
-    // Slider key codes
-    private static final int MODE_NORMAL = 601;
-    private static final int MODE_VIBRATION = 602;
-    private static final int MODE_SILENCE = 603;
+import static android.view.KeyEvent.ACTION_DOWN;
+
+public class KeyHandler extends CameraManager.AvailabilityCallback
+        implements DeviceKeyHandler {
+    private static final int KEYCODE_SLIDER_UP = 594;
+    private static final int KEYCODE_SLIDER_DOWN = 595;
 
     private final Context mContext;
-    private final AudioManager mAudioManager;
     private final Vibrator mVibrator;
+    private final CameraManager mCameraManager;
+    private final PowerManager mPowerManager;
+
+    private boolean mIsCameraAppOpen = false;
+    private boolean mIsDefaultCameraAppOpen = false;
+    private Timer mCameraInUseTimer;
 
     public KeyHandler(Context context) {
         mContext = context;
 
-        mAudioManager = mContext.getSystemService(AudioManager.class);
         mVibrator = mContext.getSystemService(Vibrator.class);
+        mCameraManager = mContext.getSystemService(CameraManager.class);
+        mPowerManager = mContext.getSystemService(PowerManager.class);
+
+        if (mCameraManager != null) {
+            mCameraManager.registerAvailabilityCallback(this, null /* handler */);
+        }
+    }
+
+    @Override
+    public void onCameraAvailable(String cameraId) {
+        super.onCameraAvailable(cameraId);
+
+        mCameraInUseTimer = new Timer();
+        mCameraInUseTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mIsCameraAppOpen = false;
+                mIsDefaultCameraAppOpen = false;
+                mCameraInUseTimer.cancel();
+            }
+        }, 1000);
+    }
+
+    @Override
+    public void onCameraUnavailable(String cameraId) {
+        super.onCameraUnavailable(cameraId);
+        mIsCameraAppOpen = true;
+
+        try {
+            mCameraInUseTimer.cancel();
+        } catch (Exception e) {}
     }
 
     public KeyEvent handleKeyEvent(KeyEvent event) {
-        int scanCode = event.getScanCode();
+        if (!mPowerManager.isInteractive()) {
+            return event;
+        }
 
+        int action = event.getAction();
+        if (action != ACTION_DOWN) {
+            return event;
+        }
+
+        int scanCode = event.getScanCode();
         switch (scanCode) {
-            case MODE_NORMAL:
-                mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_NORMAL);
+            case KEYCODE_SLIDER_UP:
+                handleSliderUp();
                 break;
-            case MODE_VIBRATION:
-                mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_VIBRATE);
-                break;
-            case MODE_SILENCE:
-                mAudioManager.setRingerModeInternal(AudioManager.RINGER_MODE_SILENT);
+            case KEYCODE_SLIDER_DOWN:
+                handleSliderDown();
                 break;
             default:
                 return event;
         }
+
         doHapticFeedback();
 
         return null;
+    }
+
+    boolean isUserSetupComplete() {
+        return Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.USER_SETUP_COMPLETE, 0, UserHandle.USER_CURRENT) != 0;
+    }
+
+    private void startActivityAsUser(Intent intent, UserHandle handle) {
+        if (isUserSetupComplete()) {
+            mContext.startActivityAsUser(intent, handle);
+        }
+    }
+
+    private void openDefaultCameraApp(boolean frontCamera) {
+        KeyguardManager keyguardManager = mContext.getSystemService(KeyguardManager.class);
+        if (keyguardManager == null) {
+            return;
+        }
+
+        Intent intent;
+
+        if (keyguardManager.isDeviceLocked()) {
+            intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE);
+        } else {
+            intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        }
+
+        intent.putExtra("android.intent.extra.USE_FRONT_CAMERA", frontCamera);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivityAsUser(intent, UserHandle.CURRENT_OR_SELF);
+
+        mIsDefaultCameraAppOpen = true;
     }
 
     private void doHapticFeedback() {
@@ -67,6 +153,22 @@ public class KeyHandler implements DeviceKeyHandler {
             return;
         }
 
-        mVibrator.vibrate(50);
+        mVibrator.vibrate(40);
+    }
+
+    private void handleSliderDown() {
+        if (mIsCameraAppOpen && !mIsDefaultCameraAppOpen) {
+            return;
+        }
+
+        openDefaultCameraApp(true /* frontCamera */);
+    }
+
+    private void handleSliderUp() {
+        if (!mIsDefaultCameraAppOpen) {
+            return;
+        }
+
+        openDefaultCameraApp(false /* frontCamera */);
     }
 }
