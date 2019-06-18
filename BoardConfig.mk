@@ -15,7 +15,6 @@ TARGET_OTA_ASSERT_DEVICE := perseus
 # Kernel
 BOARD_KERNEL_SEPARATED_DTBO := true
 TARGET_KERNEL_CONFIG := perseus_defconfig
-TARGET_KERNEL_SOURCE := kernel/xiaomi/sdm845
 
 # Partitions
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true

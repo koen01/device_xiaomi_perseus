@@ -6,9 +6,6 @@
 
 $(call inherit-product, device/xiaomi/perseus/device.mk)
 
-# Define as phone to select Google Dialer
-IS_PHONE := true
-
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/potato/config/common_full_phone.mk)
 
@@ -27,4 +24,3 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     TARGET_DEVICE="perseus"
 
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
-
