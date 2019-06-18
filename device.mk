@@ -67,4 +67,4 @@ PRODUCT_COPY_FILES += \
 
 # Keyhandler for camera slider
 PRODUCT_PACKAGES += \
-    KeyHandler
+    com.potato.keyhandler
