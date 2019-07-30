@@ -15,8 +15,7 @@ TARGET_SCREEN_WIDTH := 1080
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-lineage
+    $(LOCAL_PATH)/overlay
 
 # Properties
 -include $(LOCAL_PATH)/device-props.mk
@@ -46,10 +45,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/uinput-fpc.kl:system/usr/keylayout/uinput-fpc.kl \
     $(LOCAL_PATH)/keylayout/uinput-goodix.kl:system/usr/keylayout/uinput-goodix.kl
 
-# LiveDisplay
-PRODUCT_PACKAGES += \
-    lineage.livedisplay@2.0-service.xiaomi_sdm845
-
 # NFC
 PRODUCT_PACKAGES += \
     com.android.nfc_extras \
@@ -67,10 +62,6 @@ PRODUCT_COPY_FILES += \
 
 # Treble
 BOARD_VNDK_RUNTIME_DISABLE := false
-
-# Wallpapers
-PRODUCT_PACKAGES += \
-    WallpapersBReel2018
 
 #KeyHandler
 PRODUCT_PACKAGES += \
