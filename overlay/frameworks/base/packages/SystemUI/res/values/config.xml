@@ -22,5 +22,16 @@
 <resources>
     <!-- Doze: check proximity sensor before pulsing? -->
     <bool name="doze_proximity_check_before_pulse">false</bool>
-</resources>
 
+
+    <!-- Type of a sensor that provides a low-power estimate of the desired display brightness, suitable to listen to while the device is asleep (e.g. during always-on display) -->
+    <string name="doze_brightness_sensor_type" rranslatable="false">android.sensor.light</string>
+
+    <integer-array name="config_doze_brightness_sensor_to_brightness">
+        <item>-1</item> <!-- 0: OFF -->
+        <item>1</item> <!-- 1: NIGHT -->
+        <item>3</item> <!-- 2: LOW -->
+        <item>7</item> <!-- 3: HIGH -->
+        <item>27</item> <!-- 4: SUN -->
+    </integer-array>
+</resources>

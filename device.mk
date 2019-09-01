@@ -76,3 +76,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     KeyHandler
 
+#Pocket-mode
+PRODUCT_PACKAGES += \
+    XiaomiPocketMode
