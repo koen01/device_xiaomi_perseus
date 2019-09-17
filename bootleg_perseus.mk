@@ -7,12 +7,12 @@
 $(call inherit-product, device/xiaomi/perseus/device.mk)
 
 # Inherit some common PixelExperience stuff.
-$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+$(call inherit-product, vendor/bootleggers/config/common_full_phone.mk)
 TARGET_GAPPS_ARCH := arm64
 TARGET_BOOT_ANIMATION_RES := 1080
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := aosp_perseus
+PRODUCT_NAME := bootleg_perseus
 PRODUCT_DEVICE := perseus
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := MI MIX 3

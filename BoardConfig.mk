@@ -14,7 +14,7 @@ TARGET_OTA_ASSERT_DEVICE := perseus
 
 
 # Kernel
-TARGET_KERNEL_CONFIG := perseus_defconfig
+TARGET_KERNEL_CONFIG := perseus_user_defconfig
 TARGET_KERNEL_SOURCE := kernel/xiaomi/perseus
 
 # HIDL
